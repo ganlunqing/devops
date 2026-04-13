@@ -1,0 +1,6 @@
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: install config nginx
+    tags: Install
+    template: src=nginx.d/nginx.conf.jinja2 dest=/etc/nginx/nginx.conf

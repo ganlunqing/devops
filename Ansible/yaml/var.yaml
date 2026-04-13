@@ -1,0 +1,7 @@
+- hosts: nginx-1
+  remote_user: root
+  tasks:
+  - name: install config nginx
+    when: ansible_distribution_version > '7'
+    yum: name=nginx state=present
+    tags: Install

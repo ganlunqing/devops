@@ -1,0 +1,22 @@
+- hosts: localhost
+  vars:
+    users:
+      name: gavin001   
+      password: afdsafdsa
+      favor: LINUX ansible ....
+  tasks:
+  - name: Test Template Vars
+    tags: test_temp
+    template: src=test.jinja2 dest=vars_nginx_test.conf
+  - name: Test set fact
+    set_fact:
+      favor: Ansible Zabbix
+    loop: "{{ lookup('dict', users) }}"
+    when: 'favor' in item.key
+
+
+  - name: Test Template Vars
+    tags: test_vars
+    debug:
+      msg: "{{item.key}}-----{{item.value}}"
+    with_dict: {name1: Gavin, Favor: 123}

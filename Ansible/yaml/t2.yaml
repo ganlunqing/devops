@@ -1,0 +1,17 @@
+- hosts: nginx-1
+  vars:
+    users:
+      name: gavin001   
+      password: afdsafdsa
+      favor: LINUX ansible ....
+    nginx_listen_port: 8080
+  tasks:
+  - name: Test set fact
+    set_fact:
+      favor: 'Ansible Zabbix'
+      favor_exists: true
+    loop: "{{ lookup('dict', users) }}"
+    when: "'favor' in item.key"
+
+  - name: set conf
+    template: src=test.jinja2 dest=/tmp/var.conf

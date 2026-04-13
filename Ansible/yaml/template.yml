@@ -1,0 +1,40 @@
+- hosts: db1
+  remote_user: root
+  tasks: 
+  - name: Create a Zabbix Template
+    register: abcd
+    local_action:
+      module: zabbix_template
+      server_url: "http://172.16.244.150:9000/zabbix"
+      login_user: admin
+      login_password: zabbix
+      template_name: A_test_1
+      template_groups:
+        - Templates
+        - Gavin_TEST
+        - Linux servers
+      link_templates:
+        - Template OS Mac OS X
+        - Template App FTP Service
+      macros:
+        - macro: '{$GAVIN1111}'
+          value: HelloWrold
+        - macro: '{$DB_PORT}'
+          value: 3306
+      state: present
+      timeout: 10
+  - name: dddd
+    debug:
+      msg: "{{ abcd }} "
+  - name: Unlink a Zabbix Template
+    tags: unlink
+    local_action:
+      module: zabbix_template
+      server_url: "http://172.16.244.150:9000/zabbix"
+      login_user: admin
+      login_password: zabbix
+      template_name: A_test_1
+      clear_templates:
+        - Template OS Mac OS X
+      state: present
+      timeout: 10

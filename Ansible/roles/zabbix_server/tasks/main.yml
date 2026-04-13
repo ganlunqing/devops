@@ -1,0 +1,29 @@
+- name: Install Mariadb
+  yum: name={{ item }} state=present
+  with_items:
+  - mariadb-server
+  notify: restart db
+
+- name: Install Zabbix Server
+  yum: name={{ item }} state=present
+  with_items:
+  - zabbix40-server
+  - zabbix40-web
+  notify: restart zabbix server
+
+- name: Install PHP
+  yum: name={{ item }} state=present
+  with_items:
+  - php
+  - httpd
+  - php-gd
+  - php-mysql
+  notify: restart httpd
+
+- name: configure - zabbix server
+  template: src=zabbix_server.conf.j2 dest=/etc/zabbix_server.conf
+  notify: restart zabbix server
+
+- name: configure - php
+  template: src=php.ini.j2 dest=/etc/php.ini
+  notify: restart httpd

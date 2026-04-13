@@ -1,0 +1,4 @@
+- hosts: nginx-2
+  remote_user: root
+  roles:
+  - zabbix_server 

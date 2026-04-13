@@ -1,0 +1,5 @@
+- hosts: nginx-1
+  remote_user: root
+  roles:
+  - {role: nginx, nginx_listen_port: 9000, when: ansible_distribution=='centos'}
+  - {role: test, nginx_listen_port: 9000, when: ansible_distribution_version=='7.8'}

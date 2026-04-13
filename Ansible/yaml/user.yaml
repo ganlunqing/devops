@@ -1,0 +1,18 @@
+- hosts: nginx-1
+  remote_user: root
+  tasks:
+  - name: Add group
+    group: name=abcd  state=present
+  - name: Add User
+    user: name={{ item.name }} group={{ item.group }} state=present
+    with_items:
+    - { name: "gavin0001", group: "gavin_group_10" }
+    - { name: "gavin0002", group: "gavin_group_11" }
+    - { name: "gavin0003", group: "gavin_group_10" }
+    - { name: "gavin0004", group: "gavin_group_10" }
+    tags: add_user1
+  - name: Add User 2
+    user: name={{ item[0] }} group={{ item[1] }}  state=present
+    with_items:
+    - [ 'user111', 'gavin_group_11'  ]
+    tags: add_user2

@@ -1,0 +1,19 @@
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+# {{ ansible_distribution_version }}
+# {{ ansible_distribution |lower }}
+# {{ ansible_distribution |upper }}
+# {{ ansible_distribution }}
+{% for k,v in ansible_memory_mb.items() %}
+  {{k}}
+  {% for key, value in v.items() %}
+	--  {{ key }}: {{ value }}
+  {% endfor %}
+{% endfor %}
+
+{% for k in ansible_interfaces  %}
+{{ k }} 
+{% endfor %}
+
+worker_processes {{ ansible_processor_vcpus }};

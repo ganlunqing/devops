@@ -1,0 +1,7 @@
+zabbix_server: 172.16.244.150
+timezone: PRC
+db_host: 172.16.244.150
+db_user: ansible
+db_password: ansible123
+db_port: 3306
+db_name: ansible_zabbix

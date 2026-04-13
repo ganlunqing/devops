@@ -1,0 +1,21 @@
+- hosts: nginx-1
+  vars:
+    name: Gavin Gan
+  tasks:
+  - name: hello {{ ansible_python_version }}
+    debug:
+      msg: "{{ ansible_python_version }} {{ ansible_memory_mb['real']['used'] }}"
+    tags: abc
+  - name: do some task {{ name }} {{ ansible_python_version}}
+    import_tasks: tasks.yml
+    when: ansible_python_version >= '2.7.5'
+  - name: testestest
+    debug:
+      msg: "{{ item.key }}---{{ item.value['used'] }} "
+    loop: "{{ lookup('dict', ansible_memory_mb) }}"
+    tags: a
+  - name: testestestf333333
+    template: 
+      src: t5.j2
+      dest: /tmp/t5.conf.test
+    tags: b

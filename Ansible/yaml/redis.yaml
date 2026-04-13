@@ -1,0 +1,34 @@
+- hosts: all
+  remote_user: root
+  tasks:
+  - name: Install Redis Package
+    yum: name=redis state=present
+    tags: Install
+  - name: Install Memcached
+    yum: name=memcached state=absent
+    tags: Install
+  - name: Install Nginx Server
+    yum: name=nginx state=latest
+    tags: InstallNginx
+  - name: Config Nginx conf
+    copy: src=nginx.conf.ansible dest=/etc/nginx/nginx.conf
+    notify: Restarted Nginx
+    tags: modify nginx.conf
+  - name: Config Nginx myconf
+    copy: src=nginx.d/gavin.conf dest=/etc/nginx/conf.d/www2.conf
+    notify: Restarted Nginx
+    tags: modify nginx.conf
+  - name: Start Nginx Server
+    service: name=nginx state=restarted
+    tags: StartNginx
+  - name: Look Port
+    command: lsof -i:9001
+  - name: Install tree
+    yum: name=tree state=present
+    tags: Install
+
+  handlers:
+    - name: Restarted Nginx
+      service: name=nginx state=restarted
+    - name: Restarted redis
+      service: name=redis state=restarted

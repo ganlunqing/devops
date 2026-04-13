@@ -1,0 +1,38 @@
+- name: Install Zabbix Agent
+  yum: name=zabbix40-agent state=present
+  tags: install_agent
+- name: configure - Zabbix-Agent
+  template: src=zabbix_agentd.conf.j2 dest=/etc/zabbix_agentd.conf
+- name: start zabbix agent
+  service: name={{ item }} state=restarted
+  with_items:
+  - zabbix-agent
+- name: Add Host to Zabbix Server
+  local_action:
+    module: zabbix_host
+    server_url: "http://172.16.244.150:9000/zabbix/"
+    login_user: admin
+    login_password: zabbix
+    host_name: "{{ ansible_hostname }}"
+    host_groups:
+      - "Linux servers"
+      - 'Gavin_TEST'
+    link_templates:
+      - "Gavin"
+      - "Template OS Linux"
+    interfaces: 
+    - type: 1
+      main: 1
+      useip: 1
+      ip: "{{ ansible_default_ipv4.address }}"
+      dns: ""
+      port: 10050
+    state: present
+    status: enabled
+  register: create_host
+  tags: update
+
+- name: Get Create Host Info
+  debug:
+    msg: "{{ create_host }}"
+

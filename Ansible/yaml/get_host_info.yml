@@ -1,0 +1,32 @@
+- hosts: all
+  vars:
+    server_url: "http://172.16.244.150:9000/zabbix/"
+  tasks:
+  - name: Get Host Info
+    register: host_info
+    local_action:
+      module: zabbix_host_info
+      server_url: "{{ server_url }}"
+      login_user: admin
+      login_password: zabbix
+      host_name: "{{ ansible_hostname }}"
+      timeout: 10
+      exact_match: no
+      remove_duplicate: yes
+  - name: get result
+    debug:
+      msg: "{{ host_info }}"
+  - name: Get zabbix host group Info
+    register: group_info
+    local_action:
+      module: zabbix_group_info
+      server_url: "{{ server_url }}"
+      login_user: admin
+      login_password: zabbix
+      timeout: 10
+      exact_match: no
+      remove_duplicate: yes
+      hostgroup_name: "Gavin_TEST"
+  - name: get group result
+    debug:
+      msg: "{{ group_info }}"

@@ -1,0 +1,16 @@
+- hosts: localhost
+  tasks:
+  - name: dump Template
+    tags: dump
+    local_action:
+      module: zabbix_template
+      server_url: "http://172.16.244.150:9000/zabbix"
+      login_user: admin
+      login_password: zabbix
+      template_name: A_test_1
+      state: dump
+      timeout: 10
+    register: tmp_dump
+  - name: show info
+    debug:
+      msg: "{{ tmp_dump }}"

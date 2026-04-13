@@ -1,0 +1,450 @@
+{\rtf1\ansi\ansicpg936\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\fnil\fcharset0 Menlo-Bold;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red49\green49\blue49;\red246\green246\blue246;
+\red31\green118\blue44;\red6\green33\blue79;\red50\green91\blue142;\red13\green95\blue24;\red134\green71\blue166;
+\red83\green83\blue83;\red210\green0\blue53;}
+{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c25098\c25098\c25098;\cssrgb\c97255\c97255\c97255;
+\cssrgb\c13333\c52549\c22745;\cssrgb\c1176\c18431\c38431;\cssrgb\c25098\c43922\c62745;\cssrgb\c0\c43922\c12549;\cssrgb\c60000\c37647\c70980;
+\cssrgb\c40000\c40000\c40000;\cssrgb\c86667\c6667\c26667;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15020\viewh17620\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf2 \CocoaLigature0 - name: add zabbix hosts \{\{ ansible_hostname \}\} \{\{ ansible_default_ipv4.address \}\}\
+  local_action:\
+    module: zabbix_host\
+    server_url: http://172.16.244.199:9000/zabbix/\
+    login_user: admin\
+    login_password: zabbix\
+    host_name: "\{\{ ansible_hostname \}\}"\
+    host_groups:\
+      - 'Linux servers'\
+    link_templates:\
+      - Template OS Linux\
+      - mytemplate\
+    status: enabled\
+    state: present\
+    interfaces:\
+    - type: 1\
+      main: 1\
+      useip: 1\
+      ip:  "\{\{ansible_default_ipv4.address\}\}"\
+      dns: ""\
+      port: 10050\
+\
+\
+
+\fs22 - name: Get host info\
+  local_action:\
+    module: zabbix_host_info\
+    server_url: http://172.16.244.150:9000/zabbix\
+    login_user: admin\
+    login_password: zabbix\
+    host_name: 'nginx-2'\
+    timeout: 10\
+    exact_match: no\
+    remove_duplicate: yes\
+\
+- name: Get host info 222\
+  register: host_info\
+  local_action:\
+    module: zabbix_host_info\
+    server_url: http://172.16.244.150:9000/zabbix\
+    login_user: admin\
+    login_password: zabbix\
+    host_name: 'nginx-2'\
+    host_inventory:\
+      - os\
+      - tag\
+    host_ip: 172.16.244.150\
+    timeout: 10\
+    exact_match: no\
+    remove_duplicate: yes\
+\
+- name: get result\
+  debug:\
+    msg: "\{\{ host_info \}\}"\
+- name: get group info\
+  local_action:\
+    module: zabbix_group_info\
+    server_url: http://172.16.244.150:9000/zabbix\
+    login_user: admin\
+    login_password: zabbix\
+    hostgroup_name:\
+      - "Linux servers"\
+      - "Templates"\
+    timeout: 10\
+  register: group_info\
+  \
+- name: get result group\
+  debug:\
+    msg: "\{\{ group_info \}\}"\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b\fs24 \cf3 \cb4 \expnd0\expndtw0\kerning0
+\CocoaLigature1 -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Create a new Zabbix template linked to groups, macros and templates\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_name
+\f1\b \cf3 :
+\f2\b0  \cf6 ExampleHost\cf3 \
+    \cf5 template_groups
+\f1\b \cf3 :
+\f2\b0 \
+      
+\f1\b -
+\f2\b0  \cf6 Role\cf3 \
+      
+\f1\b -
+\f2\b0  \cf6 Role2\cf3 \
+    \cf5 link_templates
+\f1\b \cf3 :
+\f2\b0 \
+      
+\f1\b -
+\f2\b0  \cf6 Example template1\cf3 \
+      
+\f1\b -
+\f2\b0  \cf6 Example template2\cf3 \
+    \cf5 macros
+\f1\b \cf3 :
+\f2\b0 \
+      
+\f1\b -
+\f2\b0  \cf5 macro
+\f1\b \cf3 :
+\f2\b0  \cf7 '\{$EXAMPLE_MACRO1\}'\cf3 \
+        \cf5 value
+\f1\b \cf3 :
+\f2\b0  \cf6 30000\cf3 \
+      
+\f1\b -
+\f2\b0  \cf5 macro
+\f1\b \cf3 :
+\f2\b0  \cf7 '\{$EXAMPLE_MACRO2\}'\cf3 \
+        \cf5 value
+\f1\b \cf3 :
+\f2\b0  \cf6 3\cf3 \
+      
+\f1\b -
+\f2\b0  \cf5 macro
+\f1\b \cf3 :
+\f2\b0  \cf7 '\{$EXAMPLE_MACRO3\}'\cf3 \
+        \cf5 value
+\f1\b \cf3 :
+\f2\b0  \cf7 'Example'\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 present\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Unlink and clear templates from the existing Zabbix template\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_name
+\f1\b \cf3 :
+\f2\b0  \cf6 ExampleHost\cf3 \
+    \cf5 clear_templates
+\f1\b \cf3 :
+\f2\b0 \
+      
+\f1\b -
+\f2\b0  \cf6 Example template3\cf3 \
+      
+\f1\b -
+\f2\b0  \cf6 Example template4\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 present\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Import Zabbix templates from JSON\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_json
+\f1\b \cf3 :
+\f2\b0  \cf7 "\cf8 \{\{\cf3  
+\f1\b \cf9 lookup\cf10 (
+\f2\b0 \cf11 'file'
+\f1\b \cf10 ,
+\f2\b0 \cf3  \cf11 'zabbix_apache2.json'
+\f1\b \cf10 )
+\f2\b0 \cf3  \cf8 \}\}\cf7 "\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 present\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Import Zabbix templates from XML\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_xml
+\f1\b \cf3 :
+\f2\b0  \cf7 "\cf8 \{\{\cf3  
+\f1\b \cf9 lookup\cf10 (
+\f2\b0 \cf11 'file'
+\f1\b \cf10 ,
+\f2\b0 \cf3  \cf11 'zabbix_apache2.json'
+\f1\b \cf10 )
+\f2\b0 \cf3  \cf8 \}\}\cf7 "\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 present\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Import Zabbix template from Ansible dict variable\cf3 \
+  \cf5 zabbix_template
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 template_json
+\f1\b \cf3 :
+\f2\b0 \
+      \cf5 zabbix_export
+\f1\b \cf3 :
+\f2\b0 \
+        \cf5 version
+\f1\b \cf3 :
+\f2\b0  \cf7 '3.2'\cf3 \
+        \cf5 templates
+\f1\b \cf3 :
+\f2\b0 \
+          
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Template for Testing\cf3 \
+            \cf5 description
+\f1\b \cf3 :
+\f2\b0  \cf7 'Testing
+\f1\b \cf9  
+\f2\b0 \cf7 template
+\f1\b \cf9  
+\f2\b0 \cf7 import'\cf3 \
+            \cf5 template
+\f1\b \cf3 :
+\f2\b0  \cf6 Test Template\cf3 \
+            \cf5 groups
+\f1\b \cf3 :
+\f2\b0 \
+              
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Templates\cf3 \
+            \cf5 applications
+\f1\b \cf3 :
+\f2\b0 \
+              
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Test Application\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 present\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Configure macros on the existing Zabbix template\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_name
+\f1\b \cf3 :
+\f2\b0  \cf6 Template\cf3 \
+    \cf5 macros
+\f1\b \cf3 :
+\f2\b0 \
+      
+\f1\b -
+\f2\b0  \cf5 macro
+\f1\b \cf3 :
+\f2\b0  \cf7 '\{$TEST_MACRO\}'\cf3 \
+        \cf5 value
+\f1\b \cf3 :
+\f2\b0  \cf7 'Example'\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 present\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Delete Zabbix template\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_name
+\f1\b \cf3 :
+\f2\b0  \cf6 Template\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 absent\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Dump Zabbix template as JSON\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_name
+\f1\b \cf3 :
+\f2\b0  \cf6 Template\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 dump\cf3 \
+  \cf5 register
+\f1\b \cf3 :
+\f2\b0  \cf6 template_dump\cf3 \
+\
+
+\f1\b -
+\f2\b0  \cf5 name
+\f1\b \cf3 :
+\f2\b0  \cf6 Dump Zabbix template as XML\cf3 \
+  \cf5 local_action
+\f1\b \cf3 :
+\f2\b0 \
+    \cf5 module
+\f1\b \cf3 :
+\f2\b0  \cf6 zabbix_template\cf3 \
+    \cf5 server_url
+\f1\b \cf3 :
+\f2\b0  \cf6 http://127.0.0.1\cf3 \
+    \cf5 login_user
+\f1\b \cf3 :
+\f2\b0  \cf6 username\cf3 \
+    \cf5 login_password
+\f1\b \cf3 :
+\f2\b0  \cf6 password\cf3 \
+    \cf5 template_name
+\f1\b \cf3 :
+\f2\b0  \cf6 Template\cf3 \
+    \cf5 dump_format
+\f1\b \cf3 :
+\f2\b0  \cf6 xml\cf3 \
+    \cf5 state
+\f1\b \cf3 :
+\f2\b0  \cf6 dump\cf3 \
+  \cf5 register
+\f1\b \cf3 :
+\f2\b0  \cf6 template_dump\cf3 \
+}

@@ -1,0 +1,51 @@
+"template_json": {
+            "zabbix_export": {
+                "date": "2026-01-18T12:16:56Z", 
+                "groups": [
+                    {
+                        "name": "Gavin_TEST"
+                    }, 
+                    {
+                        "name": "Linux servers"
+                    }, 
+                    {
+                        "name": "Templates"
+                    }
+                ], 
+                "templates": [
+                    {
+                        "applications": [], 
+                        "description": "", 
+                        "discovery_rules": [], 
+                        "groups": [
+                            {
+                                "name": "Gavin_TEST"
+                            }, 
+                            {
+                                "name": "Linux servers"
+                            }, 
+                            {
+                                "name": "Templates"
+                            }
+                        ], 
+                        "httptests": [], 
+                        "items": [], 
+                        "macros": [
+                            {
+                                "macro": "{$HTTP_LISTEN_PORT}", 
+                                "value": "8080"
+                            }
+                        ], 
+                        "name": "A_test_1", 
+                        "screens": [], 
+                        "template": "A_test_1", 
+                        "templates": [
+                            {
+                                "name": "Template App FTP Service"
+                            }
+                        ]
+                    }
+                ], 
+                "version": "4.0"
+            }
+        }
